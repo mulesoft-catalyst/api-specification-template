@@ -1,0 +1,71 @@
+#%RAML 1.0
+# The title field should have a meaningful short name of the API. For eg: Workday System API
+title: <<title>>
+
+# The description field should have a description of the API. This would appear in the API specification published in exchange
+description: <<description>>
+
+# The version field should contain the API version in major.minor version format prefixed with "v". For eg: v1.0, v3.4 etc
+version: v1.0
+
+# The mediaType should be application/json by default. But XML or other formats can be supported depending on the use case
+mediaType: application/json
+
+# The protocol should always be HTTPS but can be HTTP when security requirements dictate this.
+protocols: [HTTPS]
+
+# The baseUri which forms the base part of the URL for all resources defined within the RAML. It comprises of a number of elements which can be configured as follows - 
+#     For API Type:
+#     Type                      API Type Identifier
+#     ---------------           ------------------
+#     Experience                e
+#     Process                   p
+#     System                    s
+#     For API Name:
+#     Use an API name identifier such as workday-api
+#     A final BaseURI may be: p-api-workday/{version}
+
+baseUri: https://host:port/<<apitype-identifier>>-api-<<name>>/{version}
+baseUriParameters:
+  version:
+    type: string
+    example: v1.0
+    required: true
+    description: Version of the API in the major.minor format.
+
+uses: 
+  #common-fragments: exchange_modules/{your-group-id}/common-raml-fragments/{latest-version}/common-raml-fragments.raml
+
+#Common Security Model Applied - Client Enforcement
+securedBy:
+  - common-fragments.clientEnforcement
+
+#Example resource implementation provided here for reference
+#Notice it implements the common headers and error responses
+/example-resource:
+  is:
+    - common-fragments.common-headers
+    - common-fragments.common-error-responses: {"apiName": "example-api", "apiVersion": "v1.0"}
+  post:
+    body:
+      application/json:
+        type: !include types/example-type.raml
+        examples: !include examples/example-example.raml
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include types/example-type.raml
+            examples: !include examples/example-example.raml
+
+#Do NOT Remove the Health Check Endpoint - Update the apiName and apiVersion parameters below.
+/health-check:
+  is:
+    - common-fragments.common-headers
+    - common-fragments.common-error-responses: {"apiName": "example-api", "apiVersion": "v1.0"}
+  get:
+    responses:
+      200:
+          body:
+            application/json:
+              example: { "status" : "ok" }

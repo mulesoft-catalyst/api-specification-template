@@ -1,0 +1,12 @@
+{
+  "main": "api-specification-template.raml",
+  "name": "API Specification Template",
+  "classifier": "raml",
+  "tags": [],
+  "dependencies": [],
+  "groupId": "476a4bbc-c55e-4b09-acf2-5a3d0685b030",
+  "assetId": "api-specification-template",
+  "version": "1.0.1",
+  "apiVersion": "v1.0",
+  "originalFormatVersion": "1.0"
+}
